@@ -11,6 +11,19 @@
     src: url("./fonts/League_Spartan/LeagueSpartan-VariableFont_wght.ttf");
 }
 
-p {
-    font-family: "spartan";
+body  {
+    background-color: #070724;
+    background-image: url("./assets/background-stars.svg");
 }
+
+.stroke { 
+    height: 1px;
+    width: 100%;
+    
+    box-shadow: 0 0 0 100vmax #ffffff;
+    clip-path: inset(0 -100vmax);
+}
+
+/* div {
+    box-shadow: 0px 0px 0px 1px rgba(213, 200, 200, 0.2);       
+} */
