@@ -1,57 +1,71 @@
 import React from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { planetActions } from "./../store/planet-redux";
 import data from "./../source/planetsData";
 
-const NavBar = ({color, contentChange}) => {
+const NavBar = () => {
   const [activeContent, setActiveContent] = useState("overview");
+  const planetIndex = useSelector((state) => state.planetNumber)
+  const contentTitle = useSelector((state) => state.contentTitle)
 
-  const activeContentHandler = (e) => {
-    setActiveContent(e.target.id);
-    contentChange(e.target.id)
+  const dispatch = useDispatch();
+
+  const overviewHandler = () => {
+    dispatch(planetActions.contentOverview());
+  };
+  const structureHandler = () => {
+    dispatch(planetActions.contentStrucute());
+  };
+  const surfaceHandler = () => {
+    dispatch(planetActions.contentSurface());
   };
   return (
-    <div className="flex justify-evenly mt-[20px]  " >
+    <div className="flex justify-between mt-[20px]  ">
       <div>
-        <p
-        id="overview"
-          onClick={activeContentHandler}
+        <button
+          id="overview"
+          onClick={overviewHandler}
+          style={contentTitle  === "overview" ?  {borderColor: data[planetIndex].color} : {}}
           className={
-            "font-bold font-spartan tracking-[2px] border-b-4 pb-[20px]  " +
-            (activeContent === "overview"
-              ? ("text-white  " + "border-[" + color + "] ")
+            "font-spartan tracking-[2px] border-b-4 pb-[20px] text-white  " +
+            (contentTitle ===  "overview"
+              ? "text-white  "
               : "opacity-50 border-transparent")
           }
         >
           OVERVIEW
-        </p>
+        </button>
       </div>
       <div>
-        <p
-        id="structure"
-          onClick={activeContentHandler}
+        <button
+          id="structure"
+          onClick={structureHandler}
+          style={contentTitle  === "structure" ?  {borderColor: data[planetIndex].color} : {}}
           className={
-            "font-bold font-spartan tracking-[2px] border-b-4 pb-[20px] " +
-            (activeContent === "structure"
-              ? ("text-white  " + "border-[" + color + "] ")
+            "font-spartan tracking-[2px] border-b-4 pb-[20px] text-white " +
+            (contentTitle === "structure"
+              ? "text-white  " + "border-[" + data[planetIndex].color + "] "
               : "opacity-50 border-transparent")
           }
         >
           STRUCTURE
-        </p>
+        </button>
       </div>
       <div>
-        <p
-        id="geology"
-          onClick={activeContentHandler}
+        <button
+          id="geology"
+          onClick={surfaceHandler}
+          style={contentTitle  === "geology" ?  {borderColor: data[planetIndex].color} : {}}
           className={
-            "font-bold font-spartan tracking-[2px] border-b-4 pb-[20px] " +
-            (activeContent === "geology"
-              ? ("text-white  " + "border-[" + color + "] ")
+            "font-spartan tracking-[2px] border-b-4 pb-[20px] text-white " +
+            (contentTitle === "geology"
+              ? "text-white  " + "border-[" + data[planetIndex].color + "] "
               : "opacity-50 border-transparent")
           }
         >
-          SURFASE{" "}
-        </p>
+          SURFASE
+        </button>
       </div>
     </div>
   );

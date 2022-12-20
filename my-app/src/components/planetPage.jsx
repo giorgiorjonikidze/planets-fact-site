@@ -3,58 +3,42 @@ import data from "../source/planetsData";
 import NavBar from "./NavBar";
 import sourceImg from "./../assets/icon-source.svg";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./header";
 import HeaderForDesctop from "./headerForDesctop";
-
+import { useDispatch, useSelector } from "react-redux";
 
 const PlanetPage = (props) => {
-  const [activeContent, setActiveContent] = useState("overview");
+  const planetIndex = useSelector((state) => state.planetNumber);
+  const content = useSelector((state) => state.content);
+  const planetImage = useSelector((state) => state.image);
+  const showGeologyImage = useSelector((state) => state.showGeology)
 
-  const activeContentHandler = (content) => {
-    setActiveContent(content);
-  };
+  const [planet, setPlanet] = useState("");
 
-  const params = useParams();
+  useEffect(() => {
+    setPlanet(data[planetIndex]);
+    console.log(content);
+    console.log(planet);
+  }, []);
+  console.log(planet);
 
-  const planetFinder = () => {
-    const planet = data[data.findIndex((item) => item.name === params.planet)];
-    return planet;
-  };
-
-  const planet = planetFinder();
-
-  const contentType = () => {
-    if (activeContent === "overview") {
-      return;
-    }
-  };
-
-  const planetChangeHandler = (planet) => {
-    
-  }
-
-  
   return (
     <div className="text-white mb-[47px]">
       {/* header  ///////////////////////////////*/}
-      <HeaderForDesctop color={planet.color} planetChange={planetChangeHandler} />
+      {/* <HeaderForDesctop color={planet.color} planetChange={planetChangeHandler} /> */}
       {/* <Header /> */}
-      {/* <NavBar color={planet.color} contentChange={activeContentHandler} /> */}
+      <NavBar/>
       <div className="stroke h-[1px] bg-white opacity-20 stroke "></div>
       {/* image /////////////////////////////// */}
       <div className="flex flex-col items-center">
         <div className="h-[304px] flex items-center justify-center relative">
           <img
             className="w-[224px] "
-            src={
-              activeContent === "overview"
-                ? process.env.PUBLIC_URL + planet.images.planet
-                : process.env.PUBLIC_URL + planet.images.internal
-            }
+            src={process.env.PUBLIC_URL + planetImage}
             alt="asev"
           />
-          {activeContent === "geology" && (
+          {showGeologyImage && (
             <img
               className="w-[70px] absolute bottom-6"
               src={process.env.PUBLIC_URL + planet.images.geology}
@@ -63,11 +47,11 @@ const PlanetPage = (props) => {
         </div>
         <h1 className="text-[40px] font-antonio mb-4">{planet.name}</h1>
         <p className="font-spartan text-center text-[14px] leading-[24px] opacity-50 mb-[32px]">
-          {planet[activeContent].content}
+          {content.content}
         </p>
         <div className="mb-[28px] opacity-50 font-spartan">
           <span className="font-light">Source : </span>
-          <a className="" href={planet[activeContent].source}>
+          <a className="" href={content.source} target="_blank">
             Wikipedia{" "}
             <span>
               <img className="inline-block" src={sourceImg} alt="" />
